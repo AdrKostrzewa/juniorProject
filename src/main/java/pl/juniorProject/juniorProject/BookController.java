@@ -1,22 +1,27 @@
 package pl.juniorProject.juniorProject;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.juniorProject.juniorProject.model.Book;
-import pl.juniorProject.juniorProject.BookService;
 
 import java.util.List;
 
 
 
+@Api
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/books")
 public class BookController {
 
-   private final BookService bookService;
+    private final BookService bookService;
+
+    @GetMapping
+    public List<Book> getALlBooks() {
+        return bookService.findAll();
+    }
+
 
     @PostMapping
     public Book addBook(@RequestBody Book book) {
@@ -25,8 +30,6 @@ public class BookController {
     }
 
 
-    @GetMapping
-    public List<Book> getALlBooks() {
-        return bookService.findAll();
-    }
+
 }
+
