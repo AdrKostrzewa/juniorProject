@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.juniorProject.juniorProject.model.Book;
 
 import java.util.List;
-
+import java.util.Optional;
 
 
 @Api
@@ -28,6 +28,25 @@ public class BookController {
 //        Book b = Book.builder().isbn("isbn").title("title").build();
         return bookService.addBook(book);
     }
+
+    @GetMapping("/{id}")
+    public Optional<Book> findById (@PathVariable Long id){
+        return bookService.findById(id);
+    }
+
+    @DeleteMapping
+    public void removeBook (@RequestParam Long id){
+         bookService.removeBook(id);
+
+    }
+
+    @PutMapping
+    public Book updateBook (@RequestParam Long id, @RequestBody Book book){
+        return bookService.updateBook(id, book);
+
+    }
+
+
 
 
 
