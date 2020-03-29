@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
+import pl.juniorProject.juniorProject.exception.InvalidDataException;
+import pl.juniorProject.juniorProject.exception.ServerException;
 import pl.juniorProject.juniorProject.model.Book;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class BookController {
 
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
+    public Book addBook(@RequestBody Book book) throws InvalidDataException {
 //        Book b = Book.builder().isbn("isbn").title("title").build();
         return bookService.addBook(book);
     }
@@ -37,7 +39,7 @@ public class BookController {
     }
 
     @DeleteMapping
-    public void removeBook (@RequestParam Long id) throws BookNotFoundException {
+    public void removeBook (@RequestParam Long id) throws BookNotFoundException, ServerException {
          bookService.removeBook(id);
 
     }

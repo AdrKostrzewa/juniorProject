@@ -3,6 +3,8 @@ package pl.juniorProject.juniorProject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
+import pl.juniorProject.juniorProject.exception.InvalidDataException;
+import pl.juniorProject.juniorProject.exception.ServerException;
 import pl.juniorProject.juniorProject.model.Book;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,7 +18,11 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public Book addBook(Book book) {
+    public Book addBook(Book book) throws InvalidDataException {
+        if (book.getIsbn().isEmpty() || book.getTitle().isEmpty()){
+            throw new InvalidDataException();
+        }
+
         return bookRepository.save(book);
     }
 
@@ -28,11 +34,14 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-    public Book removeBook(Long id) throws BookNotFoundException {
+    public Book removeBook(Long id) throws BookNotFoundException, ServerException{
 
         Optional<Book> foundBook = findById(id);
          if (foundBook.isPresent()) {
-                bookRepository.deleteById(id);
+              try{  bookRepository.deleteById(id);}
+              catch ( Exception e){
+                 throw new ServerException(String.format("Something went wrong during removing a book by id: %d. Exception message: %s",id, e.getMessage() ));
+              }
 
         } else {
             throw new BookNotFoundException(id);

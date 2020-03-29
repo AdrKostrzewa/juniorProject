@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import pl.juniorProject.juniorProject.exception.InvalidDataException;
 import pl.juniorProject.juniorProject.model.Book;
 import pl.juniorProject.juniorProject.BookService;
 
@@ -15,10 +16,14 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        this.initData();
+        try {
+            this.initData();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void initData() {
+    private void initData() throws InvalidDataException {
         this.bookService.addBook(Book.builder().isbn("isbn1").title("title1").build());
         this.bookService.addBook(Book.builder().isbn("isbn2").title("title2").build());
         this.bookService.addBook(Book.builder().isbn("isbn3").title("title3").build());
