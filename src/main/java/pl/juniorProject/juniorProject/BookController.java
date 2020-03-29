@@ -2,7 +2,9 @@ package pl.juniorProject.juniorProject;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.model.Book;
 
 import java.util.List;
@@ -35,13 +37,14 @@ public class BookController {
     }
 
     @DeleteMapping
-    public void removeBook (@RequestParam Long id){
+    public void removeBook (@RequestParam Long id) throws BookNotFoundException {
          bookService.removeBook(id);
 
     }
 
     @PutMapping
-    public Book updateBook (@RequestParam Long id, @RequestBody Book book){
+    @ResponseStatus(HttpStatus.CREATED)
+    public Book updateBook (@RequestParam Long id, @RequestBody Book book) throws BookNotFoundException{
         return bookService.updateBook(id, book);
 
     }

@@ -2,6 +2,7 @@ package pl.juniorProject.juniorProject;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.model.Book;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,20 +28,31 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-    public void removeBook(Long id) {
-        bookRepository.deleteById(id);
+    public Book removeBook(Long id) throws BookNotFoundException {
+
+        Optional<Book> foundBook = findById(id);
+         if (foundBook.isPresent()) {
+                bookRepository.deleteById(id);
+
+        } else {
+            throw new BookNotFoundException(id);
+        }
+
+return foundBook.get();
     }
 
-    public Book updateBook (Long id, Book book) throws IllegalArgumentException{
+    public Book updateBook (Long id, Book book) throws BookNotFoundException{
         Book book1;
         try {
             book1 = bookRepository.getOne(id);
         }catch (EntityNotFoundException e) {
-        throw new IllegalArgumentException("That id doesn't exist");
+        throw new BookNotFoundException(id);
         }
         book1.setTitle(book.getTitle());
         book1.setIsbn(book.getIsbn());
        return  bookRepository.save(book1);
+
+
     }
 
 
