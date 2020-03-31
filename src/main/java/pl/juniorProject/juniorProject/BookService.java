@@ -21,7 +21,7 @@ public class BookService {
     public Book addBook(Book book) throws InvalidDataException {
         if (book.getIsbn().isEmpty() || book.getTitle().isEmpty()){
             throw new InvalidDataException();
-        }
+        }else
 
         return bookRepository.save(book);
     }
@@ -34,7 +34,7 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-    public Book removeBook(Long id) throws BookNotFoundException, ServerException{
+    public Book removeBook(Long id) throws ServerException, BookNotFoundException {
 
         Optional<Book> foundBook = findById(id);
          if (foundBook.isPresent()) {
