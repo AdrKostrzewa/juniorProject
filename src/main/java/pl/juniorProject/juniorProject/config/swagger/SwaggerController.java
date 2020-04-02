@@ -1,4 +1,4 @@
-package pl.juniorProject.juniorProject.swagger;
+package pl.juniorProject.juniorProject.config.swagger;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

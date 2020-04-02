@@ -4,6 +4,9 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.juniorProject.juniorProject.converter.BookConverter;
+import pl.juniorProject.juniorProject.dto.BookDataDTO;
+import pl.juniorProject.juniorProject.dto.BookResponseDTO;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.exception.InvalidDataException;
 import pl.juniorProject.juniorProject.exception.ServerException;
@@ -20,34 +23,36 @@ import java.util.Optional;
 public class BookController {
 
     private final BookService bookService;
+    private final BookConverter bookConverter;
 
     @GetMapping
-    public List<Book> getALlBooks() {
-        return bookService.findAll();
+    public List<BookResponseDTO> getALlBooks() {
+        return bookConverter.convertToBookDTO(bookService.findAll());
+
     }
 
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) throws InvalidDataException {
+    public BookResponseDTO addBook(@RequestBody Book book) throws InvalidDataException {
 //        Book b = Book.builder().isbn("isbn").title("title").build();
-        return bookService.addBook(book);
+        return bookConverter.convertToBookDTO(bookService.addBook(book));
     }
 
     @GetMapping("/{id}")
-    public Optional<Book> findById (@PathVariable Long id){
-        return bookService.findById(id);
+    public BookResponseDTO findById (@PathVariable Long id) throws  BookNotFoundException{
+        return bookConverter.convertToBookDTO(bookService.findById(id).orElseThrow(() -> new BookNotFoundException(id)));
     }
 
     @DeleteMapping
-    public void removeBook (@RequestParam Long id) throws BookNotFoundException, ServerException {
-         bookService.removeBook(id);
+    public BookResponseDTO removeBook (@RequestParam Long id) throws BookNotFoundException, ServerException {
+        return bookConverter.convertToBookDTO(bookService.removeBook(id));
 
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Book updateBook (@RequestParam Long id, @RequestBody Book book) throws BookNotFoundException{
-        return bookService.updateBook(id, book);
+    public BookResponseDTO updateBook (@RequestParam Long id, @RequestBody BookDataDTO bookDataDTO) throws BookNotFoundException{
+        return bookConverter.convertToBookDTO(bookService.updateBook(id,  bookDataDTO));
 
     }
 

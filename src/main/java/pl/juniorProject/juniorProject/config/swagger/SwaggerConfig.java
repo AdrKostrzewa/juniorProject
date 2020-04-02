@@ -1,4 +1,4 @@
-package pl.juniorProject.juniorProject.swagger;
+package pl.juniorProject.juniorProject.config.swagger;
 
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;

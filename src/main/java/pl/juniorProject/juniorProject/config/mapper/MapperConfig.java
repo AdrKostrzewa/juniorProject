@@ -1,4 +1,4 @@
-package pl.juniorProject.juniorProject.mapper;
+package pl.juniorProject.juniorProject.config.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

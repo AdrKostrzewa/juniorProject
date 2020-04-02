@@ -2,6 +2,7 @@ package pl.juniorProject.juniorProject;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.juniorProject.juniorProject.dto.BookDataDTO;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.exception.InvalidDataException;
 import pl.juniorProject.juniorProject.exception.ServerException;
@@ -50,15 +51,15 @@ public class BookService {
 return foundBook.get();
     }
 
-    public Book updateBook (Long id, Book book) throws BookNotFoundException{
+    public Book updateBook (Long id, BookDataDTO bookDataDTO) throws BookNotFoundException{
         Book book1;
         try {
             book1 = bookRepository.getOne(id);
         }catch (EntityNotFoundException e) {
         throw new BookNotFoundException(id);
         }
-        book1.setTitle(book.getTitle());
-        book1.setIsbn(book.getIsbn());
+        book1.setTitle(bookDataDTO.getTitle());
+        book1.setIsbn(bookDataDTO.getIsbn());
        return  bookRepository.save(book1);
 
 
