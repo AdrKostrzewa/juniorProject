@@ -5,15 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.juniorProject.juniorProject.converter.BookConverter;
-import pl.juniorProject.juniorProject.dto.BookDataDTO;
 import pl.juniorProject.juniorProject.dto.BookResponseDTO;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.exception.InvalidDataException;
-import pl.juniorProject.juniorProject.exception.ServerException;
 import pl.juniorProject.juniorProject.model.Book;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Api
@@ -28,9 +25,7 @@ public class BookController {
     @GetMapping
     public List<BookResponseDTO> getALlBooks() {
         return bookConverter.convertToBookDTO(bookService.findAll());
-
     }
-
 
     @PostMapping
     public BookResponseDTO addBook(@RequestBody Book book) throws InvalidDataException {
@@ -44,15 +39,15 @@ public class BookController {
     }
 
     @DeleteMapping
-    public BookResponseDTO removeBook (@RequestParam Long id) throws BookNotFoundException, ServerException {
+    public BookResponseDTO removeBook (@RequestParam Long id) throws BookNotFoundException {
         return bookConverter.convertToBookDTO(bookService.removeBook(id));
 
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookResponseDTO updateBook (@RequestParam Long id, @RequestBody BookDataDTO bookDataDTO) throws BookNotFoundException{
-        return bookConverter.convertToBookDTO(bookService.updateBook(id,  bookDataDTO));
+    public BookResponseDTO updateBook (@RequestParam Long id, @RequestBody Book book) throws BookNotFoundException{
+        return bookConverter.convertToBookDTO(bookService.updateBook(id,  book));
 
     }
 

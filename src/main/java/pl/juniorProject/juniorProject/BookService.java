@@ -2,13 +2,10 @@ package pl.juniorProject.juniorProject;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.juniorProject.juniorProject.dto.BookDataDTO;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.exception.InvalidDataException;
-import pl.juniorProject.juniorProject.exception.ServerException;
 import pl.juniorProject.juniorProject.model.Book;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,33 +32,45 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
-    public Book removeBook(Long id) throws ServerException, BookNotFoundException {
+    public Book
+    removeBook(Long id) throws  BookNotFoundException {
 
-        Optional<Book> foundBook = findById(id);
-         if (foundBook.isPresent()) {
-              try{  bookRepository.deleteById(id);}
-              catch ( Exception e){
-                 throw new ServerException(String.format("Something went wrong during removing a book by id: %d. Exception message: %s",id, e.getMessage() ));
-              }
+//        Optional<Book> foundBook = findById(id);
+//         if (foundBook.isPresent()) {
+//              try{  bookRepository.deleteById(id);}
+//              catch ( Exception e){
+//                 throw new ServerException(String.format("Something went wrong during removing a book by id: %d. Exception message: %s",id, e.getMessage() ));
+//              }
+//
+//        } else {
+//            throw new BookNotFoundException(id);
+//        }
+//
+//return foundBook.get();
 
-        } else {
-            throw new BookNotFoundException(id);
-        }
+        return findById(id).map(
+                book -> {bookRepository.delete(book);
+                return book;}
+        ).orElseThrow(() -> new BookNotFoundException(id));
 
-return foundBook.get();
     }
 
-    public Book updateBook (Long id, BookDataDTO bookDataDTO) throws BookNotFoundException{
-        Book book1;
-        try {
-            book1 = bookRepository.getOne(id);
-        }catch (EntityNotFoundException e) {
-        throw new BookNotFoundException(id);
-        }
-        book1.setTitle(bookDataDTO.getTitle());
-        book1.setIsbn(bookDataDTO.getIsbn());
-       return  bookRepository.save(book1);
+    public Book updateBook (Long id, Book book) throws BookNotFoundException{
+//        Book book1;
+//        try {
+//            book1 = bookRepository.getOne(id);
+//        }catch (EntityNotFoundException e) {
+//        throw new BookNotFoundException(id);
+//        }
+//        book1.setTitle(bookDataDTO.getTitle());
+//        book1.setIsbn(bookDataDTO.getIsbn());
+//       return  bookRepository.save(book1);
 
+        return findById(id).map(book1 -> {
+            book1.setIsbn(book.getIsbn());
+            book1.setTitle(book.getTitle());
+            return bookRepository.save(book1);
+        }).orElseThrow(() ->new  BookNotFoundException(id));
 
     }
 
