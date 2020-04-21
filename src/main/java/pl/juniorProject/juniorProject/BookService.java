@@ -16,6 +16,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
+
     public Book addBook(Book book) throws InvalidDataException {
         if (book.getIsbn().isEmpty() || book.getTitle().isEmpty()){
             throw new InvalidDataException();
