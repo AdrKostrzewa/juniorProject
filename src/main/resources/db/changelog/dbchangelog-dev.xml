@@ -8,6 +8,6 @@
          http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
 
     <include file="version/initDB.xml" relativeToChangelogFile="true"/>
-
+    <include file="version/data/fillDB.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
