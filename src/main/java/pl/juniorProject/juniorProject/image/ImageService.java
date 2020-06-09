@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.juniorProject.juniorProject.image.facade.ImageFacade;
 
+import java.awt.*;
+
 @Service
 public class ImageService {
     private final ImageFacade imageFacade;
@@ -14,7 +16,11 @@ public class ImageService {
         this.imageFacade = imageFacade;
     }
 
-    public void addBook(MultipartFile file) {
-        imageFacade.addImage(file);
+//    public void addBook(MultipartFile file) {
+//        imageFacade.addImage(file);
+//    }
+
+    public Image addBook(MultipartFile file){
+        return imageFacade.addImage(file);
     }
 }
