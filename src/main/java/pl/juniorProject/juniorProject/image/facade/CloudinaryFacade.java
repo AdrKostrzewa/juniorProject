@@ -2,19 +2,26 @@ package pl.juniorProject.juniorProject.image.facade;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.juniorProject.juniorProject.exception.CloudinaryException;
+import pl.juniorProject.juniorProject.model.Image;
 
+import java.awt.*;
 import java.io.IOException;
+import java.nio.file.ClosedDirectoryStreamException;
 import java.util.Map;
+
 
 @Service
 public class CloudinaryFacade implements ImageFacade {
 
 
-
-        private final Cloudinary cloudinary;
+    private final Cloudinary cloudinary;
+    private final static String URL = "secure_url";
+    private final static String SAVED_NAME = "public_id";
 
         @Autowired
         public CloudinaryFacade(Cloudinary cloudinary) {
@@ -22,11 +29,18 @@ public class CloudinaryFacade implements ImageFacade {
         }
 
     @Override
-    public void addImage(MultipartFile file) {
+    public Image addImage(MultipartFile file) throws CloudinaryException {
         try {
             Map upload = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            return Image.builder()
+                    .originName(file.getOriginalFilename())
+                    .size(file.getSize())
+                    .savedName(upload.get(SAVED_NAME).toString())
+                    .url(upload.get(URL).toString())
+                    .build();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CloudinaryException(e.getMessage());
         }
+
     }
 }

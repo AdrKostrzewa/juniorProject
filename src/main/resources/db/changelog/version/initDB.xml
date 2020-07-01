@@ -23,4 +23,23 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="adrian">
+        <createTable tableName="images">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" unique="true" primaryKeyName="images_pk"/>
+            </column>
+            <column name="url" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="saved_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="origin_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="size" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

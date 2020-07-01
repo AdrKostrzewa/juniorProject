@@ -7,7 +7,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
          http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
 
-    <changeSet id="2" author="rezorl">
+    <changeSet id="2" author="adrian">
         <insert tableName="books">
             <column name="title" value="Muzy Młodej Polski"/>
             <column name="isbn" value="8176CKGBXPI6F"/>

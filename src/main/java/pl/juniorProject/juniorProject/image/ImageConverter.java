@@ -5,11 +5,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.juniorProject.juniorProject.dto.ImageResponseDTO;
+import pl.juniorProject.juniorProject.model.Image;
 
 import java.awt.*;
 
 @Component
-@RequiredArgsConstructor
+
+
 public class ImageConverter {
     private final ModelMapper modelMapper;
 
