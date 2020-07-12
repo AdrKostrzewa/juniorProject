@@ -11,6 +11,7 @@ import pl.juniorProject.juniorProject.dto.ImageResponseDTO;
 import pl.juniorProject.juniorProject.exception.CloudinaryException;
 import pl.juniorProject.juniorProject.image.ImageConverter;
 import pl.juniorProject.juniorProject.image.ImageService;
+import pl.juniorProject.juniorProject.image.exception.ContentTypeException;
 
 @RestController
 @Api
@@ -26,7 +27,7 @@ public class ImageController {
     }
 
     @PostMapping
-    public ImageResponseDTO addBook(@RequestBody MultipartFile file) throws CloudinaryException {
-        return this.imageConverter.convertToImageDTO(this.imageService.addBook(file));
+    public ImageResponseDTO addImage(@RequestBody MultipartFile file) throws CloudinaryException, ContentTypeException {
+        return this.imageConverter.convertToImageDTO(this.imageService.addImage(file));
     }
 }
