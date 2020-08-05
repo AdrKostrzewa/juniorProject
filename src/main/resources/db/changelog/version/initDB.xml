@@ -39,7 +39,15 @@
             </column>
             <column name="size" type="bigint">
                 <constraints nullable="false" />
+
+        </column>
+            <column name="book_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
+
         </createTable>
+        <addForeignKeyConstraint baseTableName="images" baseColumnNames="book_id" constraintName="fk_images_book_id"
+                                 referencedTableName="books"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
