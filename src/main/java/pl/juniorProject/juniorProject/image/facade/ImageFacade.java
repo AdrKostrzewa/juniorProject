@@ -9,6 +9,8 @@ import java.awt.*;
 public interface ImageFacade {
 
         Image addImage(MultipartFile file) throws  CloudinaryException;
+
+    void deleteImage(Image image) throws CloudinaryException;
     }
 
 

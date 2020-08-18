@@ -43,4 +43,14 @@ public class CloudinaryFacade implements ImageFacade {
         }
 
     }
+
+
+    @Override
+    public void deleteImage(Image image) throws CloudinaryException {
+        try {
+            cloudinary.uploader().destroy(image.getSavedName(), ObjectUtils.emptyMap());
+        } catch (IOException e) {
+            throw new CloudinaryException(e.getMessage());
+        }
+    }
 }

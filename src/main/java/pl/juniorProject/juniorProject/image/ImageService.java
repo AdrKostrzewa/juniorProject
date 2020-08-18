@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.juniorProject.juniorProject.BookService;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.exception.CloudinaryException;
+import pl.juniorProject.juniorProject.exception.ImageNotFoundException;
 import pl.juniorProject.juniorProject.image.exception.ContentTypeException;
 import pl.juniorProject.juniorProject.image.facade.ImageFacade;
 import pl.juniorProject.juniorProject.model.Book;
@@ -55,5 +56,25 @@ public class ImageService {
     public Set<Image> findAll(Long bookId) throws BookNotFoundException {
         Book book = bookService.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
         return book.getImages();
+    }
+
+
+    @Transactional
+    public void deleteImage(Long imageId) throws ImageNotFoundException, CloudinaryException {
+        Image image = imageRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
+        deleteImage(image);
+    }
+
+    private void deleteImage(Image image) throws CloudinaryException {
+        imageFacade.deleteImage(image);
+        imageRepository.delete(image);
+    }
+
+    @Transactional
+    public void deleteImagesByBookId(Long bookId) throws BookNotFoundException, CloudinaryException {
+        Book book = bookService.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
+        for (Image image : book.getImages()) {
+            deleteImage(image);
+        }
     }
 }
