@@ -7,7 +7,7 @@ import pl.juniorProject.juniorProject.model.Image;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ImageMapper {
 
     ImageMapper INSTANCE = Mappers.getMapper(ImageMapper.class);
