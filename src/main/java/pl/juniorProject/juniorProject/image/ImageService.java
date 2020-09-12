@@ -53,7 +53,7 @@ public class ImageService {
                 return contentType.contains("image/");
             }
 
-    public Set<Image> findAll(Long bookId) throws BookNotFoundException {
+    public List<Image> findAll(Long bookId) throws BookNotFoundException {
         Book book = bookService.findById(bookId).orElseThrow(() -> new BookNotFoundException(bookId));
         return book.getImages();
     }

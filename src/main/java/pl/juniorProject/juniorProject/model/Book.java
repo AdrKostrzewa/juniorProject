@@ -24,7 +24,7 @@ public class Book {
     private String description;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Image> images;
+    private List<Image> images;
 
     public Long getId() {
     return id;
@@ -58,11 +58,11 @@ public class Book {
         this.description = description;
     }
 
-    public Set<Image> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 }

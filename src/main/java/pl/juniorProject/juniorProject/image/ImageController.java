@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.juniorProject.juniorProject.dto.ImageResponseDTO;
+import pl.juniorProject.juniorProject.dto.ImageResponse;
 import pl.juniorProject.juniorProject.exception.BookNotFoundException;
 import pl.juniorProject.juniorProject.exception.CloudinaryException;
 import pl.juniorProject.juniorProject.exception.ImageNotFoundException;
-import pl.juniorProject.juniorProject.image.ImageConverter;
-import pl.juniorProject.juniorProject.image.ImageService;
 import pl.juniorProject.juniorProject.image.exception.ContentTypeException;
+import pl.juniorProject.juniorProject.image.mapper.ImageMapper;
+import pl.juniorProject.juniorProject.model.Image;
 
 import java.util.List;
 
@@ -20,22 +20,22 @@ import java.util.List;
 @RequestMapping("/images")
 public class ImageController {
     private final ImageService imageService;
-    private final ImageConverter imageConverter;
+    private final ImageMapper imageMapper;
 
     @Autowired
-    public ImageController(ImageService imageService, ImageConverter imageConverter) {
+    public ImageController( ImageMapper imageMapper, ImageService imageService) {
         this.imageService = imageService;
-        this.imageConverter = imageConverter;
+        this.imageMapper = imageMapper;
+
     }
 
     @PostMapping(value = "/{bookId}")
-    public ImageResponseDTO addImage(@RequestBody MultipartFile file, @PathVariable Long bookId) throws CloudinaryException, ContentTypeException, BookNotFoundException, BookNotFoundException {
-        return this.imageConverter.convertToImageDTO(this.imageService.addImage(bookId, file));
-    }
+    public ImageResponse addImage(@RequestBody MultipartFile file, @PathVariable Long bookId) throws CloudinaryException, ContentTypeException, BookNotFoundException {
+              return this.imageMapper.toImageResponse(this.imageService.addImage(bookId, file));}
 
     @GetMapping(value = "/{bookId}")
-    public List<ImageResponseDTO> findImages(@PathVariable Long bookId) throws BookNotFoundException {
-        return this.imageConverter.convertToImageDTO(this.imageService.findAll(bookId));
+    public List<ImageResponse> findImages(@PathVariable Long bookId) throws BookNotFoundException {
+              return this.imageMapper.toImageResponse((this.imageService.findAll(bookId)));
     }
 
 
